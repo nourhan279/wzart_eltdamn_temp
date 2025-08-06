@@ -1,0 +1,26 @@
+.accordion-button::after {
+  margin-left: 0 !important;
+  margin-right: auto;
+  border-radius: 50%;
+}
+.accordion-button {
+  font-weight: bold;
+  color: rgb(0, 0, 0) !important;
+  background-color: white !important;
+}
+.accordion {
+  background-color: rgb(238, 238, 238);
+}
+.header {
+  margin-top: 5.5rem;
+}
+.header::before {
+  display: inline-block;
+  content: "";
+  width: 0.5rem;
+  height: 5rem;
+  background-color: rgb(100, 144, 233);
+  margin-inline-end: 0.7rem;
+  vertical-align: middle;
+  border-radius: 2rem;
+}

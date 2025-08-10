@@ -5,17 +5,14 @@ export const schema = z.object({
 
   price: z.coerce
     .number()
-    .min(6000, "minimium price should be 6000")
+    .min(100, "minimium price should be 100")
     .max(60000, "maximum price should be 60000"),
   category: z.string(),
   description: z
     .string()
     .min(3, "description at least be 3 char")
     .max(255, "description at most 255 char"),
-  image: z
-    .any()
-    .refine((files) => files?.length > 0, "Image is required")
-    .refine((files) => {
-      return files[0]?.size <= MAX_FILE_SIZE;
-    }, `Max file size is 2MB.`),
+  image: z.any().refine((files) => {
+    return files[0]?.size <= MAX_FILE_SIZE;
+  }, `Max file size is 2MB.`),
 });

@@ -2,8 +2,16 @@ import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "../../schema/Schema";
+import { useEffect } from "react";
+import { editProduct } from "../productApi/edit";
+import { any } from "zod";
 
-export function AddForm({ handleAdd }) {
+export function AddForm({
+  handleAdd,
+  isedit,
+
+  setisedit,
+}) {
   const {
     register,
     handleSubmit,
@@ -11,9 +19,27 @@ export function AddForm({ handleAdd }) {
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema), mode: "onChange" });
 
+  useEffect(() => {
+    reset(
+      isedit || {
+        title: "",
+        price: "",
+        description: "",
+        image: "",
+        category: "",
+      }
+    );
+  }, [isedit, reset]);
+
   const onSubmit = (data) => {
     console.log(data);
-    handleAdd(data);
+    if (isedit) {
+      editProduct(data, isedit.id);
+      setisedit(null);
+    } else {
+      handleAdd(data);
+    }
+
     reset();
   };
 
@@ -44,6 +70,7 @@ export function AddForm({ handleAdd }) {
           <input
             {...register("price", { required: "price required" })}
             type="number"
+            step="any"
             className="form-control"
             id="price"
             aria-describedby="priceHelp"
@@ -72,7 +99,7 @@ export function AddForm({ handleAdd }) {
             Image
           </label>
           <input
-            {...register("image", { required: "image required" })}
+            {...register("image")}
             type="file"
             className="form-control"
             id="image"
@@ -141,8 +168,11 @@ export function AddForm({ handleAdd }) {
           )}
         </div>
 
-        <button type="submit" className="btn btn-primary">
-          Submit
+        <button
+          type="submit"
+          className={isedit ? "btn btn-success" : "btn btn-primary"}
+        >
+          {isedit ? "update" : "Add"}
         </button>
       </form>
     </>
